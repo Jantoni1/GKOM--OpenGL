@@ -360,11 +360,11 @@ int main()
 		std::shared_ptr<Mesh> skyBox6 = plane6.build();
 		std::shared_ptr<Mesh> bake = bake_cylinder.build();
 		std::shared_ptr<Mesh> innerTable = bakePart.build();
-		bake_door.wrap(glm::vec2(0.0f, 0.67f), glm::vec2(1.0f, 1.0f));
+		bake_door.wrap(glm::vec2(-0.5f, 0.33f / 2), glm::vec2(0.5f, 0.33f + 0.33f/ 2));
 		std::shared_ptr<Mesh> door1 = bake_door.build();
-		bake_door.wrap(glm::vec2(0.0f, 0.0f / 2.0f), glm::vec2(1.0f, 0.33));
+		bake_door.wrap(glm::vec2(-0.5f, 0.33f + 0.33f / 2), glm::vec2(0.5f, 0.67f + 0.33f / 2));
 		std::shared_ptr<Mesh> door3 = bake_door.build();
-		bake_door.wrap(glm::vec2(0.0f, 0.33f), glm::vec2(1.0f, 0.67f));
+		bake_door.wrap(glm::vec2(-0.5f, 0.67f + 0.33f / 2), glm::vec2(0.5f, 1.0f + 0.33f / 2));
 		std::shared_ptr<Mesh> door2 = bake_door.build();
 		bake_cylinder.height(bake_cylinder.getHeight()* 0.95);
 		bake_cylinder.radius(bake_cylinder.getRadius()* 0.95);
