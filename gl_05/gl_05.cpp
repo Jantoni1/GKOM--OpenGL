@@ -14,7 +14,7 @@ using namespace std;
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-const GLuint WIDTH = 800, HEIGHT = 800;
+const GLuint WIDTH = 1200, HEIGHT = 1200;
 
 float lastX = 400, lastY = 300;
 
@@ -47,9 +47,10 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	lastX = xpos;
 	lastY = ypos;
 
-	float sensitivity = 0.05f;
+	float sensitivity = (float)WIDTH / 16000.0f;
+	float sensitivity1 = (float)HEIGHT / 16000.0f;
 	xoffset *= sensitivity;
-	yoffset *= sensitivity;
+	yoffset *= sensitivity1;
 
 	yaw += xoffset;
 	pitch += yoffset;
