@@ -91,16 +91,32 @@
     <ClCompile Include="shprogram.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Dokument.rtf" />
     <None Include="gl_05.frag" />
     <None Include="gl_05.vert" />
     <None Include="gl_06.frag" />
     <None Include="gl_06.vert" />
+    <None Include="lamp.frag" />
+    <None Include="lamp.vert" />
+    <None Include="mousky.rwx" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="backmou.jpg" />
+    <Image Include="botmou.jpg" />
     <Image Include="dullMetal.jpg" />
+    <Image Include="factory-pipes-skybox.png" />
+    <Image Include="frontmou.jpg" />
     <Image Include="iipw.png" />
     <Image Include="kamien.png" />
+    <Image Include="leftmou.jpg" />
+    <Image Include="mainContainer.jpg" />
+    <Image Include="mainCylinder.jpg" />
     <Image Include="metalTexture.jpg" />
+    <Image Include="piec3.jpg" />
+    <Image Include="podloga.jpg" />
+    <Image Include="rightmou.jpg" />
+    <Image Include="rock.jpg" />
+    <Image Include="topmou.jpg" />
     <Image Include="weiti.png" />
   </ItemGroup>
   <ItemGroup>

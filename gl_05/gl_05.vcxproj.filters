@@ -48,6 +48,10 @@
     <None Include="gl_05.vert" />
     <None Include="gl_06.vert" />
     <None Include="gl_06.frag" />
+    <None Include="Dokument.rtf" />
+    <None Include="lamp.frag" />
+    <None Include="lamp.vert" />
+    <None Include="mousky.rwx" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="iipw.png">
@@ -63,6 +67,42 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="kamien.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="factory-pipes-skybox.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="frontmou.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="backmou.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="botmou.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="leftmou.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="mainCylinder.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="mainContainer.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="piec3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="podloga.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="rightmou.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="rock.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="topmou.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

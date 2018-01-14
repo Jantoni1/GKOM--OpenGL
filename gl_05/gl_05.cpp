@@ -686,7 +686,7 @@ int main()
 				, cubebuilder.getHeight()/2 + bake_cylinder.getRadius() / 2 + move));
 			bakeTable = glm::translate(bakeCylinder, glm::vec3(0.0f, -bakePart.getDepth() / 2, -displacement1337));
 			bakeDoor1 = glm::translate(bakeCylinder, glm::vec3(0.0f, bake_cylinder.getHeight()/3, 0.0f));
-			bakeDoor2 = glm::translate(bakeCylinder, glm::vec3(0.0f, doorTimer, -doorTimer * 0.0001));
+			bakeDoor2 = glm::translate(bakeCylinder, glm::vec3(0.0f, doorTimer, -upperBound * 0.0001));
 			bakeDoor3 = glm::translate(bakeCylinder, glm::vec3(0.0f, -bake_cylinder.getHeight()/3, 0.0f));
 			bakeCylinder = glm::rotate(bakeCylinder, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			bakeDoor1 = glm::rotate(bakeDoor1, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
