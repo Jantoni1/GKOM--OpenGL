@@ -77,7 +77,10 @@ GLuint LoadMipmapTexture(GLuint texId, const char* fname)
 	int width, height;
 	unsigned char* image = SOIL_load_image(fname, &width, &height, 0, SOIL_LOAD_RGB);
 	if (image == nullptr)
-		throw exception("Failed to load texture file");
+	{
+		throw exception(fname);
+	}
+
 
 	GLuint texture;
 	glGenTextures(1, &texture);
@@ -476,6 +479,7 @@ int main()
 		glm::mat4 projection;
 		projection = glm::perspective(glm::radians(45.0f), float(WIDTH / HEIGHT), 0.1f, 100.0f);
 
+
 		GLuint perspective = glGetUniformLocation(programForHalfCylinder.get_programID(), "projection");
 		glUniformMatrix4fv(perspective, 1, GL_FALSE, glm::value_ptr(projection));
 
@@ -791,8 +795,7 @@ int main()
 				downwards = false;
 			}
 			if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_O) != GLFW_PRESS)
-			{
-				
+			{	
 				upwards = true;
 				downwards = false;
 			}
@@ -884,8 +887,9 @@ int main()
 			camera = glGetUniformLocation(theProgram.get_programID(), "view");
 			glUniformMatrix4fv(camera, 1, GL_FALSE, glm::value_ptr(view));
 
-			camera = glGetUniformLocation(skyBoxProgram.get_programID(), "view");
-			glUniformMatrix4fv(camera, 1, GL_FALSE, glm::value_ptr(view));
+
+			perspective = glGetUniformLocation(theProgram.get_programID(), "projection");
+			glUniformMatrix4fv(perspective, 1, GL_FALSE, glm::value_ptr(projection));
 			//rot_angle += 0.05f;
 			//if (rot_angle >= 360.0f)
 			//	rot_angle -= 360.0f;
@@ -924,6 +928,7 @@ int main()
 			glBindTexture(GL_TEXTURE_2D, texture0);
 
 			//glUniform1i(glGetUniformLocation(theProgram.get_programID(), "Texture1"), 1);
+
 			displacement = displacement * trans;
 			glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, glm::value_ptr(displacement));
 			mesh->draw();	//main
@@ -937,22 +942,6 @@ int main()
 			bakeCylinder = bakeCylinder * trans;
 			glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, glm::value_ptr(bakeCylinder));
 			bake->draw();	
-
-			skyBoxProgram.Use();
-			skyBoxProgram.setFloat("ambientIntensity", 0.25f);
-			camera = glGetUniformLocation(skyBoxProgram.get_programID(), "view");
-			glUniformMatrix4fv(camera, 1, GL_FALSE, glm::value_ptr(view));
-			perspective = glGetUniformLocation(skyBoxProgram.get_programID(), "projection");
-			glUniformMatrix4fv(perspective, 1, GL_FALSE, glm::value_ptr(projection));
-			perspective = glGetUniformLocation(skyBoxProgram.get_programID(), "model");
-			glUniformMatrix4fv(perspective, 1, GL_FALSE, glm::value_ptr(bakeCylinder));
-			innerBake->draw();
-			bakeTable = bakeTable * trans;
-
-			glUniformMatrix4fv(perspective, 1, GL_FALSE, glm::value_ptr(bakeTable));
-			innerTable->draw();
-
-			theProgram.Use();
 
 			bakeDoor1 = bakeDoor1 * trans;
 			glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, glm::value_ptr(bakeDoor1));
@@ -969,8 +958,29 @@ int main()
 
 			door3->draw();
 
+			skyBoxProgram.Use();
+			skyBoxProgram.setFloat("ambientIntensity", 0.25f);
+			glm::mat4 neutral = glm::lookAt(startPos, startPos + cameraFront, cameraUp);
+			camera = glGetUniformLocation(skyBoxProgram.get_programID(), "view");
+			glUniformMatrix4fv(camera, 1, GL_FALSE, glm::value_ptr(view));
+			perspective = glGetUniformLocation(skyBoxProgram.get_programID(), "projection");
+			glUniformMatrix4fv(perspective, 1, GL_FALSE, glm::value_ptr(projection));
+			GLuint kozak = glGetUniformLocation(skyBoxProgram.get_programID(), "model");
+			glUniformMatrix4fv(kozak, 1, GL_FALSE, glm::value_ptr(bakeCylinder));
+			innerBake->draw();
+			bakeTable = bakeTable * trans;
+
+			glUniformMatrix4fv(kozak, 1, GL_FALSE, glm::value_ptr(bakeTable));
+			innerTable->draw();
+
+			glUniformMatrix4fv(camera, 1, GL_FALSE, glm::value_ptr(neutral));
 
 
+			theProgram.Use();
+
+			
+
+			theProgram.Use();
 
 			theProgram.setFloat("material.shininess", 1.0f);
 
@@ -1048,6 +1058,7 @@ int main()
 			displacement5 *= trans * rotation;
 			glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, glm::value_ptr(displacement5));
 			exp1->draw();	//chyba lewy
+
 			if(filler5.get() != nullptr && filler6.get() != nullptr)
 			{
 				oldHalf *= trans * rotation;
@@ -1078,9 +1089,7 @@ int main()
 			rotationLoc = glGetUniformLocation(skyBoxProgram.get_programID(), "model");
 			perspective = glGetUniformLocation(skyBoxProgram.get_programID(), "projection");
 			glUniformMatrix4fv(perspective, 1, GL_FALSE, glm::value_ptr(projection));
-			glm::mat4 neutral = glm::lookAt(startPos, startPos + cameraFront, cameraUp);
-			camera = glGetUniformLocation(programForHalfCylinder.get_programID(), "view");
-			glUniformMatrix4fv(camera, 1, GL_FALSE, glm::value_ptr(neutral));
+
 
 			//glUniform1i(glGetUniformLocation(theProgram.get_programID(), "Texture"), 5);
 
