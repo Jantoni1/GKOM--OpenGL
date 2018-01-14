@@ -59,7 +59,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;soil.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;soil.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib; libcmt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -81,18 +81,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConeBuilder.cpp" />
+    <ClCompile Include="CubeBuilder.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="gl_05.cpp" />
+    <ClCompile Include="HalfCylinder.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="PlaneBuilder.cpp" />
     <ClCompile Include="shprogram.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="gl_05.frag" />
     <None Include="gl_05.vert" />
+    <None Include="gl_06.frag" />
+    <None Include="gl_06.vert" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="dullMetal.jpg" />
     <Image Include="iipw.png" />
+    <Image Include="kamien.png" />
+    <Image Include="metalTexture.jpg" />
     <Image Include="weiti.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConeBuilder.h" />
+    <ClInclude Include="CubeBuilder.h" />
+    <ClInclude Include="Cylinder.h" />
+    <ClInclude Include="HalfCylinder.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="PlaneBuilder.h" />
     <ClInclude Include="shprogram.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
