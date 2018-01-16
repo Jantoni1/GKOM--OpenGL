@@ -25,6 +25,8 @@ float sensitivity = 0.1f;
 float zoom = 45.0f;
 bool firstMouse = true;
 
+static float timing = 0.1f;
+
 glm::vec3 lightPos(0.5f, 0.0f, 1.8f);
 
 glm::vec3 startPos = glm::vec3(0.5f, 0.0f, 1.3f);
@@ -132,15 +134,19 @@ int main()
 
 		glViewport(0, 0, WIDTH, HEIGHT);
 
+		glfwSwapInterval(0);
+
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		glfwSetCursorPosCallback(window, mouse_callback);
-		
+
 		glm::vec3 front;
 		front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
 		front.y = sin(glm::radians(pitch));
 		front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
 		cameraFront = glm::normalize(front);
+
+
 
 		//glEnable(GL_CULL_FACE);
 		//glDepthMask(GL_TRUE);
@@ -177,7 +183,7 @@ int main()
 		GLfloat hole = 0.05f;
 		GLfloat additionalContainerOffset = 0.5f;
 		static GLfloat halvesHeight = 0.1f;
-		
+
 		float cubeHeightRatio = 4.0f;
 		float width = 1.2f;
 
@@ -185,8 +191,8 @@ int main()
 		cubebuilder.height(width*cubeHeightRatio * parameter);
 		cubebuilder.depth(0.12 * parameter);
 		cubebuilder.width(width * parameter);
-		cubebuilder.rightMap(glm::vec2(0.5f, -5.0 * cubebuilder.getHeight()/ parameter/ 1.5), glm::vec2(1.0f, 1.0f));
-		cubebuilder.leftMap(glm::vec2(0.5f, -5.0 * cubebuilder.getHeight() / parameter/1.5), glm::vec2(1.0f, 1.0f));
+		cubebuilder.rightMap(glm::vec2(0.5f, -5.0 * cubebuilder.getHeight() / parameter / 1.5), glm::vec2(1.0f, 1.0f));
+		cubebuilder.leftMap(glm::vec2(0.5f, -5.0 * cubebuilder.getHeight() / parameter / 1.5), glm::vec2(1.0f, 1.0f));
 		cubebuilder.frontMap(glm::vec2(0.0f, floormove + 0.0f), glm::vec2(0.5f, floormove + 2.0f));
 		cubebuilder.backMap(glm::vec2(0.0f, floormove + 0.0f), glm::vec2(0.5f, floormove + 2.0f));
 		cubebuilder.topMap(glm::vec2(0.0f, floormove + 0.0f), glm::vec2(0.5f, floormove + 2.0f  * cubebuilder.getDepth() / cubebuilder.getHeight()));
@@ -218,7 +224,7 @@ int main()
 
 		CubeBuilder fill2;
 		fill2.height(0.2 * parameter);
-		fill2.depth(miningContainer.getDepth() /2 - cubebuilder.getDepth()/2 - (halvesHeight) * parameter);
+		fill2.depth(miningContainer.getDepth() / 2 - cubebuilder.getDepth() / 2 - (halvesHeight)* parameter);
 		fill2.width(cubebuilder.getWidth());
 		fill2.frontMap(glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f));
 		fill2.backMap(glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f));
@@ -229,7 +235,7 @@ int main()
 
 		CubeBuilder fill3;
 		fill3.height(0.2 * parameter);
-		fill3.depth(miningContainer.getDepth()/2 - cubebuilder.getDepth() / 2 - hole * parameter);
+		fill3.depth(miningContainer.getDepth() / 2 - cubebuilder.getDepth() / 2 - hole * parameter);
 		fill3.width(cubebuilder.getWidth());
 		fill3.frontMap(glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f));
 		fill3.backMap(glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f));
@@ -286,7 +292,7 @@ int main()
 
 		Cylinder bake_door;
 		bake_door.radius(1.0 * parameter);
-		bake_door.height(bakeHeight / 3  * parameter);
+		bake_door.height(bakeHeight / 3 * parameter);
 		bake_door.wrap(glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 0.5f));
 		bake_door.upperCap(glm::vec2(0.0f, 0.0f), glm::vec2(0.5f, 0.5f));
 		bake_door.lowerCap(glm::vec2(0.0f, 0.5f), glm::vec2(1.0f, 0.5f));
@@ -323,7 +329,7 @@ int main()
 
 
 		GLfloat skyBoxHeight = 30.0f;
-		GLfloat skyBoxWidth= 30.0f;
+		GLfloat skyBoxWidth = 30.0f;
 		GLfloat skyBoxDepth = 30.0f;
 
 		PlaneBuilder plane1(skyBoxHeight, skyBoxWidth, skyBoxDepth, 0);
@@ -341,7 +347,7 @@ int main()
 
 		std::shared_ptr<Mesh> mesh = mainCylinder.build();
 		std::shared_ptr<Mesh> mesh1 = joint.build();
-		std::shared_ptr<Mesh> mesh2 = drill.build(); 
+		std::shared_ptr<Mesh> mesh2 = drill.build();
 		std::shared_ptr<Mesh> exp = halfCylinder.build();
 		std::shared_ptr<Mesh> exp1 = halfCylinder1.build();
 		std::shared_ptr<Mesh> coneDrill = cone.build();
@@ -360,7 +366,7 @@ int main()
 		std::shared_ptr<Mesh> skyBox6 = plane6.build();
 		std::shared_ptr<Mesh> bake = bake_cylinder.build();
 		std::shared_ptr<Mesh> innerTable = bakePart.build();
-		bake_door.wrap(glm::vec2(-0.5f, 0.33f / 2), glm::vec2(0.5f, 0.33f + 0.33f/ 2));
+		bake_door.wrap(glm::vec2(-0.5f, 0.33f / 2), glm::vec2(0.5f, 0.33f + 0.33f / 2));
 		std::shared_ptr<Mesh> door1 = bake_door.build();
 		bake_door.wrap(glm::vec2(-0.5f, 0.33f + 0.33f / 2), glm::vec2(0.5f, 0.67f + 0.33f / 2));
 		std::shared_ptr<Mesh> door3 = bake_door.build();
@@ -370,8 +376,8 @@ int main()
 		bake_cylinder.radius(bake_cylinder.getRadius()* 0.95);
 		bake_cylinder.normals(true);
 		std::shared_ptr<Mesh> innerBake = bake_cylinder.build();
-		bake_cylinder.height(bake_cylinder.getHeight()/ 0.95);
-		bake_cylinder.radius(bake_cylinder.getRadius()/ 0.95);
+		bake_cylinder.height(bake_cylinder.getHeight() / 0.95);
+		bake_cylinder.radius(bake_cylinder.getRadius() / 0.95);
 
 		std::shared_ptr<Mesh> light = cube.build();
 
@@ -440,8 +446,8 @@ int main()
 
 		GLuint texture3 = LoadMipmapTexture(GL_TEXTURE3, "podloga.jpg");
 
-		GLuint texture4= LoadMipmapTexture(GL_TEXTURE4, "mainContainer.jpg");
-		
+		GLuint texture4 = LoadMipmapTexture(GL_TEXTURE4, "mainContainer.jpg");
+
 		GLuint texture5 = LoadMipmapTexture(GL_TEXTURE5, "topmou.jpg");
 
 		GLuint texture6 = LoadMipmapTexture(GL_TEXTURE6, "botmou.jpg");
@@ -478,7 +484,7 @@ int main()
 		//glBindTexture(GL_TEXTURE_2D, texture1);
 
 		glm::mat4 projection;
-		projection = glm::perspective(glm::radians(45.0f), float(WIDTH / HEIGHT), 0.1f, 100.0f);
+		projection = glm::perspective(glm::radians(45.0f), float(WIDTH / HEIGHT), 0.1f, 300.0f);
 
 
 		GLuint perspective = glGetUniformLocation(programForHalfCylinder.get_programID(), "projection");
@@ -498,8 +504,9 @@ int main()
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			// Bind Textures using texture units
 
-
-
+			static float pastTiming = timing;
+			static float currentTiming = glfwGetTime();
+			static float timing = 2.0 * (currentTiming - pastTiming);
 
 			theProgram.Use();
 
@@ -528,7 +535,7 @@ int main()
 			static GLfloat hammerDisplacement = -0.3f;
 			static GLfloat deepestHammerDisplacement = -0.3f - halvesHeight * parameter;
 			static GLfloat stepForMain = 0.001f;
-			static GLfloat drillMaxDisplacement = cubebuilder.getWidth()/2 - halfCylinder.getRadius();
+			static GLfloat drillMaxDisplacement = cubebuilder.getWidth() / 2 - halfCylinder.getRadius();
 			if (disp >= deepestHammerDisplacement && disp < hammerDisplacement && !blockDrill)
 			{
 				canGoDeeper = true;
@@ -537,17 +544,17 @@ int main()
 			{
 				canGoDeeper = false;
 			}
-			if(downwards && (disp > hammerDisplacement || (disp > deepestHammerDisplacement && broken && canGoDeeper)))
+			if (downwards && (disp > hammerDisplacement || (disp > deepestHammerDisplacement && broken && canGoDeeper)))
 			{
-				disp -= stepForMain;
+				disp -= timing * stepForMain;
 			}
 			else if ((disp - hammerDisplacement) < 0.00001f && !broken)
 			{
 				drilling = true;
 			}
-			if(upwards && disp < 0.0)
+			if (upwards && disp < 0.0)
 			{
-				disp += stepForMain;
+				disp += timing * stepForMain;
 
 			}
 			else {
@@ -574,22 +581,22 @@ int main()
 			static int result = 100;
 
 			static bool moveForward;
-			static GLfloat upperbound = bake_cylinder.getRadius()/2 + 0.045;
+			static GLfloat upperbound = bake_cylinder.getRadius() / 2 + 0.045;
 			static GLfloat step1 = upperbound * moveStep / upperBound;
 
 			static GLfloat lowerbound = 0.0f;
 			static GLfloat displacement1337 = 0.0f;
-			if(bakeUp)
-			{	
-				doorTimer += moveStep;
-				displacement1337 += step1;
-				if(doorTimer >= upperBound)
+			if (bakeUp)
+			{
+				doorTimer += timing * moveStep;
+				displacement1337 += timing * step1;
+				if (doorTimer >= upperBound)
 				{
 					++counter;
 					displacement1337 = upperbound;
 					doorTimer = upperBound;
-					if(counter == result)
-					{	
+					if (counter == result)
+					{
 						counter = 0;
 						bakeUp = false;
 						bakeDown = true;
@@ -597,26 +604,26 @@ int main()
 
 				}
 			}
-			if(bakeDown)
+			if (bakeDown)
 			{
-				displacement1337 -= step1;
-				doorTimer -= moveStep;
-				if(doorTimer <= lowerBound)
+				displacement1337 -= timing * step1;
+				doorTimer -= timing * moveStep;
+				if (doorTimer <= lowerBound)
 				{
 					doorTimer = lowerBound;
 					bakeDown = false;
 				}
 			}
 
-			if(minorSlowdown == 5) {
+			if (minorSlowdown == 5) {
 				minorSlowdown = 0;
-				minorDisp += minorDown ? -step : step;
-				if(minorDisp <= -0.15f)
+				minorDisp += minorDown ? timing * -step : timing * step;
+				if (minorDisp <= -0.15f)
 				{
 					minorDisp = -0.15f;
 					minorDown = false;
 				}
-				if(minorDisp >= 0.0f)
+				if (minorDisp >= 0.0f)
 				{
 					minorDisp = 0.0f;
 					minorDown = true;
@@ -625,11 +632,11 @@ int main()
 			else {
 				++minorSlowdown;
 			}
-			if(cylinderDisplacement <= drillMaxDisplacement && broken && allowed)
+			if (cylinderDisplacement <= drillMaxDisplacement && broken && allowed)
 			{
-				cylinderDisplacement += 0.001f;
+				cylinderDisplacement += timing * 0.001f;
 			}
-			else if(broken && cylinderDisplacement >= drillMaxDisplacement && disp > hammerDisplacement && createnew)
+			else if (broken && cylinderDisplacement >= drillMaxDisplacement && disp > hammerDisplacement && createnew)
 			{
 				allowed = false;
 				exp._Swap(filler5);
@@ -646,14 +653,14 @@ int main()
 				displacementForCylinders = displacementmax2;
 				bakeUp = true;
 				bakeDown = false;
-			} 
+			}
 
-			if(broken && !allowed)
+			if (broken && !allowed)
 			{
 				if (displacementForCylinders < displacementmax1)
 				{
 					blockDrill = true;
-					displacementForCylinders += displacementStep;
+					displacementForCylinders += timing * displacementStep;
 					canGoDeeper = false;
 				}
 				else
@@ -671,28 +678,28 @@ int main()
 			static GLfloat mainCylinderOffset = displ + mainCylinder.getHeight() / 2 + joint.getHeight();
 			static GLfloat jointOffset = displ + joint.getHeight() / 2;
 			GLfloat drillOffset = -drill.getHeight() * 1 / 2 + displ + hammerDisplacement - halvesHeight * parameter;
-			displacement = glm::translate( displacement,  glm::vec3(0.0f, mainCylinderOffset + disp, move)); //MainCylinder
-			displacement1 = glm::translate(displacement1, glm::vec3(0.0f,  jointOffset + disp, move));	//Joint
-			displacement2 = glm::translate(displacement2, glm::vec3(0.0f,  jointOffset - drill.getHeight() / 2 + displ + minorDisp + disp, move)); //DRILL
-			displacement3 = glm::translate(displacement3, glm::vec3(0.0f, drillOffset - halvesHeight * parameter /2 - cubebuilder.getDepth()/2 - cone.getHeight() / 1, 0.0f)); // TABLE
+			displacement = glm::translate(displacement, glm::vec3(0.0f, mainCylinderOffset + disp, move)); //MainCylinder
+			displacement1 = glm::translate(displacement1, glm::vec3(0.0f, jointOffset + disp, move));	//Joint
+			displacement2 = glm::translate(displacement2, glm::vec3(0.0f, jointOffset - drill.getHeight() / 2 + displ + minorDisp + disp, move)); //DRILL
+			displacement3 = glm::translate(displacement3, glm::vec3(0.0f, drillOffset - halvesHeight * parameter / 2 - cubebuilder.getDepth() / 2 - cone.getHeight() / 1, 0.0f)); // TABLE
 			displacement4 = glm::translate(displacement4, glm::vec3(0.0f + cylinderDisplacement, drillOffset - cone.getHeight() / 1, displacementForCylinders)); //HALF
 			displacement5 = glm::translate(displacement5, glm::vec3(0.0f - cylinderDisplacement, drillOffset - cone.getHeight() / 1, displacementForCylinders)); //HALF
-			drillDisplacement = glm::translate(drillDisplacement, glm::vec3(0.0f, jointOffset - drill.getHeight()  - cone.getHeight() / 2+ displ + minorDisp + disp, move));
+			drillDisplacement = glm::translate(drillDisplacement, glm::vec3(0.0f, jointOffset - drill.getHeight() - cone.getHeight() / 2 + displ + minorDisp + disp, move));
 			glm::vec3 containerDispl = glm::vec3(0.0f, drillOffset - halvesHeight * parameter / 2 - cone.getHeight() / 1,
 				-miningContainer.getHeight() / 2 - cubebuilder.getHeight() / 2 + additionalContainerOffset);
 			containerDisplacement = glm::translate(containerDisplacement, containerDispl);
-			fillDispl1 = glm::translate(fillDispl1, containerDispl + glm::vec3(cubebuilder.getWidth() / 2 + fill.getWidth()/2 - 0.002, 0.0f, miningContainer.getHeight() / 2 - fill.getHeight() / 2));
+			fillDispl1 = glm::translate(fillDispl1, containerDispl + glm::vec3(cubebuilder.getWidth() / 2 + fill.getWidth() / 2 - 0.002, 0.0f, miningContainer.getHeight() / 2 - fill.getHeight() / 2));
 			fillDispl2 = glm::translate(fillDispl2, containerDispl + glm::vec3(-cubebuilder.getWidth() / 2 - fill.getWidth() / 2 + 0.002, 0.0f, miningContainer.getHeight() / 2 - fill.getHeight() / 2));
-			fillDispl3 = glm::translate(fillDispl3, containerDispl + glm::vec3(0.0f, miningContainer.getDepth()/2 - fill2.getDepth() / 2 - 0.002, miningContainer.getHeight() / 2 - fill2.getHeight() / 2));
-			fillDispl4 = glm::translate(fillDispl4, containerDispl + glm::vec3(0.0f, -miningContainer.getDepth() / 2 + fill3.getDepth() / 2 + 0.002,  miningContainer.getHeight() / 2 - fill3.getHeight() / 2 ));
+			fillDispl3 = glm::translate(fillDispl3, containerDispl + glm::vec3(0.0f, miningContainer.getDepth() / 2 - fill2.getDepth() / 2 - 0.002, miningContainer.getHeight() / 2 - fill2.getHeight() / 2));
+			fillDispl4 = glm::translate(fillDispl4, containerDispl + glm::vec3(0.0f, -miningContainer.getDepth() / 2 + fill3.getDepth() / 2 + 0.002, miningContainer.getHeight() / 2 - fill3.getHeight() / 2));
 			oldHalf = glm::translate(oldHalf, glm::vec3(0.0f + drillMaxDisplacement, drillOffset - cone.getHeight() / 1, destinationDisplacement + displacementForCylinders)); //HALF
 			oldHalf1 = glm::translate(oldHalf1, glm::vec3(0.0f - drillMaxDisplacement, drillOffset - cone.getHeight() / 1, destinationDisplacement + displacementForCylinders)); //HALF
 			bakeCylinder = glm::translate(bakeCylinder, glm::vec3(0.0f, drillOffset - halvesHeight * parameter / 2 - cone.getHeight() / 1
-				, cubebuilder.getHeight()/2 + bake_cylinder.getRadius() / 2 + move));
+				, cubebuilder.getHeight() / 2 + bake_cylinder.getRadius() / 2 + move));
 			bakeTable = glm::translate(bakeCylinder, glm::vec3(0.0f, -bakePart.getDepth() / 2, -displacement1337));
-			bakeDoor1 = glm::translate(bakeCylinder, glm::vec3(0.0f, bake_cylinder.getHeight()/3, 0.0f));
+			bakeDoor1 = glm::translate(bakeCylinder, glm::vec3(0.0f, bake_cylinder.getHeight() / 3, 0.0f));
 			bakeDoor2 = glm::translate(bakeCylinder, glm::vec3(0.0f, doorTimer, -upperBound * 0.0001));
-			bakeDoor3 = glm::translate(bakeCylinder, glm::vec3(0.0f, -bake_cylinder.getHeight()/3, 0.0f));
+			bakeDoor3 = glm::translate(bakeCylinder, glm::vec3(0.0f, -bake_cylinder.getHeight() / 3, 0.0f));
 			bakeCylinder = glm::rotate(bakeCylinder, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			bakeDoor1 = glm::rotate(bakeDoor1, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			bakeDoor2 = glm::rotate(bakeDoor2, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -704,9 +711,9 @@ int main()
 			GLfloat d = 0.01f;
 			p1 = glm::translate(p1, startPos + glm::vec3(0.0f, plane1.mDepth / 2 - d, 0.0f));
 			p2 = glm::translate(p2, startPos + glm::vec3(0.0f, -plane1.mDepth / 2 + d, 0.0f));
-			p3 = glm::translate(p3, startPos + glm::vec3(0.0f, 0.0f,  plane1.mHeight / 2 - d));
+			p3 = glm::translate(p3, startPos + glm::vec3(0.0f, 0.0f, plane1.mHeight / 2 - d));
 			p4 = glm::translate(p4, startPos + glm::vec3(0.0f, 0.0f, -plane1.mHeight / 2 + d));
-			p5 = glm::translate(p5, startPos + glm::vec3( plane1.mWidth/2 - d, 0.0f, 0.0f));
+			p5 = glm::translate(p5, startPos + glm::vec3(plane1.mWidth / 2 - d, 0.0f, 0.0f));
 			p6 = glm::translate(p6, startPos + glm::vec3(-plane1.mWidth / 2 + d, 0.0f, 0.0f));
 
 
@@ -722,7 +729,7 @@ int main()
 			glm::mat4 view;
 			//view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
 
-			cameraSpeed = 2.5f * deltaTime; // adjust accordingly
+			cameraSpeed = 2.0f * deltaTime; // adjust accordingly
 
 			static bool lockDown = false;
 
@@ -730,44 +737,44 @@ int main()
 			cooldown--;
 			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 			{
-				cameraPos += cameraSpeed * cameraFront;
-				if(lockDown)
-					lightPos += cameraSpeed * cameraFront;
+				cameraPos += timing *cameraSpeed * cameraFront;
+				if (lockDown)
+					lightPos += timing *cameraSpeed * cameraFront;
 			}
 			if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 			{
-				cameraPos -= cameraSpeed * cameraFront;
+				cameraPos -= timing *cameraSpeed * cameraFront;
 				if (lockDown)
-					lightPos -= cameraSpeed * cameraFront;
+					lightPos -= timing *cameraSpeed * cameraFront;
 			}
 			if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 			{
-				cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+				cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * timing *cameraSpeed;
 				if (lockDown)
-					lightPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+					lightPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * timing *cameraSpeed;
 
 			}
 			if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 			{
-				cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+				cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * timing * cameraSpeed;
 				if (lockDown)
 				{
-					lightPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+					lightPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * timing * cameraSpeed;
 				}
 			}
-			if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) 
+			if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
 			{
 				if (cooldown <= 0)
 				{
-					step = (step - 0.001f) >= 0.0f ? step - 0.001f : step >= 0 ? 0.0f : step;
+					step = (step - timing * 0.001f) >= 0.0f ? step - timing * 0.001f : step >= 0 ? 0.0f : step;
 					cooldown = 20;
 				}
 			}
 			if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 			{
-				if(cooldown <= 0)
+				if (cooldown <= 0)
 				{
-					step = (step + 0.001f) <= 0.1f ? step + 0.001f : step;
+					step = (step + timing * 0.001f) <= 0.1f ? step + timing * 0.001f : step;
 					cooldown = 20;
 				}
 			}
@@ -778,7 +785,7 @@ int main()
 					time += step * step * 2000;
 					if (time >= drillOver)
 					{
-						drillMaxDisplacement = (cubebuilder.getWidth() / 2 - halfCylinder.getRadius()) * step /  0.1f;
+						drillMaxDisplacement = (cubebuilder.getWidth() / 2 - halfCylinder.getRadius()) * step / 0.1f;
 						time = 0.0f;
 						allowed = true;
 						drilling = false;
@@ -796,7 +803,7 @@ int main()
 				downwards = false;
 			}
 			if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_O) != GLFW_PRESS)
-			{	
+			{
 				upwards = true;
 				downwards = false;
 			}
@@ -805,7 +812,7 @@ int main()
 				upwards = false;
 			}
 			if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
-			{	
+			{
 				lightPos = cameraPos;
 				lockDown = false;
 			}
@@ -813,12 +820,12 @@ int main()
 			{
 				lockDown = false;
 			}
-			else if(glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+			else if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
 			{
 				lockDown = true;
 			}
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-			
+
 			static GLfloat lightType = 0.0f;
 
 			if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
@@ -846,17 +853,17 @@ int main()
 			{
 				show = false;
 			}
-			
+
 			//view = glm::lookAt(cameraPos, cameraFront, cameraUp);
 			view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
 
 			delay += 0.001f;
-			if(delay >= 0.001f )
+			if (delay >= 0.001f)
 			{
-				if(broken && !canGoDeeper && !allowed)
+				if (broken && !canGoDeeper && !allowed)
 				{
-					floormove += delay;
+					floormove += timing * delay;
 					if (floormove >= 1.0f)
 					{
 						floormove = 0.0f;
@@ -873,13 +880,13 @@ int main()
 				{
 					delay -= +0.0027f;
 				}
-				
+
 			}
-			
+
 			static bool isSkyBox = 0.0f;
 
 			rotation = glm::rotate(rotation, -glm::radians(angle), glm::vec3(0.0, 0.0, 1.0));
-			
+
 
 			GLuint camera = glGetUniformLocation(programForHalfCylinder.get_programID(), "view");
 			glUniformMatrix4fv(camera, 1, GL_FALSE, glm::value_ptr(view));
@@ -942,7 +949,7 @@ int main()
 			theProgram.setFloat("material.shininess", 0.8f);
 			bakeCylinder = bakeCylinder * trans;
 			glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, glm::value_ptr(bakeCylinder));
-			bake->draw();	
+			bake->draw();
 
 			bakeDoor1 = bakeDoor1 * trans;
 			glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, glm::value_ptr(bakeDoor1));
@@ -979,7 +986,7 @@ int main()
 
 			theProgram.Use();
 
-			
+
 
 			theProgram.Use();
 
@@ -1016,7 +1023,7 @@ int main()
 
 			theProgram.setFloat("material.shininess", 0.8f);
 
-			theProgram.setVec2("TexCoordShift", 0.0f , floormove);
+			theProgram.setVec2("TexCoordShift", 0.0f, floormove);
 
 			glBindTexture(GL_TEXTURE_2D, texture3);
 			displacement3 *= trans;
@@ -1045,8 +1052,8 @@ int main()
 			glUniformMatrix4fv(camera, 1, GL_FALSE, glm::value_ptr(view));
 			perspective = glGetUniformLocation(programForHalfCylinder.get_programID(), "projection");
 			glUniformMatrix4fv(perspective, 1, GL_FALSE, glm::value_ptr(projection));
-			
-			
+
+
 			glBindTexture(GL_TEXTURE_2D, texture2);
 			glUniform1i(glGetUniformLocation(programForHalfCylinder.get_programID(), "Texture"), 1);
 			rotationLoc = glGetUniformLocation(programForHalfCylinder.get_programID(), "model");
@@ -1060,7 +1067,7 @@ int main()
 			glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, glm::value_ptr(displacement5));
 			exp1->draw();	//chyba lewy
 
-			if(filler5.get() != nullptr && filler6.get() != nullptr)
+			if (filler5.get() != nullptr && filler6.get() != nullptr)
 			{
 				oldHalf *= trans * rotation;
 				glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, glm::value_ptr(oldHalf));
@@ -1070,7 +1077,7 @@ int main()
 				filler6->draw();
 			}
 
-			if(show)
+			if (show)
 			{
 				lampShader.Use();
 				lampShader.setMat4("projection", projection);
